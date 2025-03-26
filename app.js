@@ -6,6 +6,18 @@ const path = require('path');
 const app = express();
 const PORT = 3001;
 
+// Helper function to ensure URL has a protocol and is properly formatted
+function ensureProtocol(url) {
+  if (!url) return url;
+  
+  url = url.trim();
+  // Check if URL starts with http:// or https://
+  if (!url.match(/^https?:\/\//)) {
+    return 'http://' + url;
+  }
+  return url;
+}
+
 // Middleware to parse request bodies
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -19,11 +31,14 @@ app.get('/', (req, res) => {
 // API endpoint to fetch and modify content
 app.post('/fetch', async (req, res) => {
   try {
-    const { url } = req.body;
+    let { url } = req.body;
     
     if (!url) {
       return res.status(400).json({ error: 'URL is required' });
     }
+
+    // Ensure URL has a protocol
+    url = ensureProtocol(url);
 
     // Fetch the content from the provided URL
     const response = await axios.get(url);

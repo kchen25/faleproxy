@@ -8,10 +8,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const originalUrlElement = document.getElementById('original-url');
     const pageTitleElement = document.getElementById('page-title');
 
+    function ensureProtocol(url) {
+        if (!url) return url;
+        
+        url = url.trim();
+        // Check if URL starts with http:// or https://
+        if (!url.match(/^https?:\/\//)) {
+            return 'http://' + url;
+        }
+        return url;
+    }
+
     urlForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
-        const url = urlInput.value.trim();
+        const url = ensureProtocol(urlInput.value.trim());
         
         if (!url) {
             showError('Please enter a valid URL');
