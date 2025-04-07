@@ -2,9 +2,7 @@ name: Faleproxy CI
 
 on:
   push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+    branches: [ main ]
 
 jobs:
   test:
@@ -37,7 +35,7 @@ jobs:
         
   deploy:
     needs: test
-    if: ${{ success() && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') }}
+    if: ${{ success() && (github.ref == 'refs/heads/main') }}
     runs-on: ubuntu-latest
     
     steps:
